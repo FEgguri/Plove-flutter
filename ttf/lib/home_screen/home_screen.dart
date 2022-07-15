@@ -18,105 +18,105 @@ class _HomeScreenState extends State<HomeScreen> {
       "img": 'asset/image/proflie/people_1.png',
       "name": "robin",
       "age": '23',
-      "rate" : "0"
+      "rate": "0"
     },
     {
       "idx": '2',
       "img": 'asset/image/proflie/people_2.png',
       "name": "jasi",
       "age": '34',
-      "rate" : "0"
+      "rate": "0"
     },
     {
       "idx": '3',
       "img": 'asset/image/proflie/people_3.png',
       "name": "robert",
       "age": '34',
-      "rate" : "0"
+      "rate": "0"
     },
     {
       "idx": '4',
       "img": 'asset/image/proflie/people_4.png',
       "name": "teemo",
       "age": '17',
-      "rate" : "0"
+      "rate": "0"
     },
     {
       "idx": '5',
       "img": 'asset/image/proflie/people_5.png',
       "name": "jinger",
       "age": '25',
-      "rate" : "0"
+      "rate": "0"
     },
     {
       "idx": '6',
       "img": 'asset/image/proflie/people_6.png',
       "name": "pola",
       "age": '23',
-      "rate" : "0"
+      "rate": "0"
     },
     {
       "idx": '7',
       "img": 'asset/image/proflie/people_7.png',
       "name": "rubi",
       "age": '25',
-      "rate" : "0"
+      "rate": "0"
     },
     {
       "idx": '8',
       "img": 'asset/image/proflie/people_8.png',
       "name": "trip",
       "age": '33',
-      "rate" : "0"
+      "rate": "0"
     },
     {
       "idx": '9',
       "img": 'asset/image/proflie/people_9.png',
       "name": "tom",
       "age": '31',
-      "rate" : "0"
+      "rate": "0"
     },
     {
       "idx": '10',
       "img": 'asset/image/proflie/people_10.png',
       "name": "rabet",
       "age": '35',
-      "rate" : "0"
+      "rate": "0"
     },
     {
       "idx": '11',
       "img": 'asset/image/proflie/people_11.png',
       "name": "jeager",
       "age": '28',
-      "rate" : "0"
+      "rate": "0"
     },
     {
       "idx": '12',
       "img": 'asset/image/proflie/people_12.png',
       "name": "sora",
       "age": '25',
-      "rate" : "0"
+      "rate": "0"
     },
     {
       "idx": '13',
       "img": 'asset/image/proflie/people_13.png',
       "name": "hubo",
       "age": '21',
-      "rate" : "0"
+      "rate": "0"
     },
     {
       "idx": '14',
       "img": 'asset/image/proflie/people_14.png',
       "name": "rachat",
       "age": '27',
-      "rate" : "0"
+      "rate": "0"
     },
     {
       "idx": '15',
       "img": 'asset/image/proflie/people_15.png',
       "name": "jijo",
       "age": '30',
-      "rate" : "0"
+      "rate": "0"
     },
   ];
 
@@ -162,8 +162,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var second = 60 - now.second;
+    var minute = 60 - now.minute;
+    var hour = 6 - now.hour;
     var secount = 60 - now.second;
-    if (secount == 60) {
+
+    print("$hour" + "시" + "$minute" + "분" + "$second" + "초");
+
+    if (minute == 60 && second == 60) {
       ArrayListFilter();
     }
 
@@ -192,6 +198,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             _Timeleft(
               now: secount,
+              minute: minute,
             ),
             SizedBox(
               height: 30.0,
@@ -216,21 +223,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                   'age': '${e['age']}',
                                   'name': '${e['name']}',
                                   'img': '${e['img']}',
-                                  'rate' : '${e['rate']}'
+                                  'rate': '${e['rate']}',
                                 }
                               ],
                             ),
                           ),
                         );
-                        print(index['idx']);
-                        print(index['rate']);
+
                         var ray = int.parse(index['idx']);
                         proList.forEach((k) {
                           if (k["idx"] == "$ray") {
                             k["rate"] = '${index["rate"]}';
                           }
                         });
-                        print(proList);
                       },
                       userImg: e['img'],
                       userName: e['name'],
@@ -279,9 +284,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class _Timeleft extends StatelessWidget {
   final now;
+  final minute;
 
   const _Timeleft({
     required this.now,
+    required this.minute,
     Key? key,
   }) : super(key: key);
 
@@ -291,7 +298,7 @@ class _Timeleft extends StatelessWidget {
       child: Align(
         alignment: Alignment.center,
         child: Text(
-          '다음소개까지 남은 시간 ${now}',
+          '다음소개까지 남은 시간 ${minute} 분 ${now}초',
           style: TextStyle(
             color: Color.fromRGBO(89, 57, 89, 1),
             fontFamily: 'NotoSans',

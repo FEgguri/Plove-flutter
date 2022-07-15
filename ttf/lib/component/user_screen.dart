@@ -78,9 +78,28 @@ class UserScreen extends StatelessWidget {
                               fontSize: 40.0,
                               fontWeight: FontWeight.w700,
                               color: Colors.purple[700]),
+                        ), 
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '평점',
+                              style: TextStyle(
+                                  fontSize: 30.0,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.purple[700]),
+                            ),
+                            Text(
+                              userList['rate'],
+                              style: TextStyle(
+                                  fontSize: 35.0,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.purple[700]),
+                            ),
+                          ],
                         ),
                         SizedBox(
-                          height: 30.0,
+                          height: 20.0,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
