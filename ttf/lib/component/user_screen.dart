@@ -8,10 +8,8 @@ class UserScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userList =  (ModalRoute.of(context)!.settings.arguments as List<Map<String, dynamic>>)[0];
-    print(userList);
-    print(userList['age']);
-    
+    final userList = (ModalRoute.of(context)!.settings.arguments
+        as List<Map<String, dynamic>>)[0];
 
     return Scaffold(
       appBar: AppBar(
@@ -81,6 +79,34 @@ class UserScreen extends StatelessWidget {
                               fontWeight: FontWeight.w700,
                               color: Colors.purple[700]),
                         ),
+                        SizedBox(
+                          height: 30.0,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            _Rating(
+                              userList: userList,
+                              rate: 1,
+                            ),
+                            _Rating(
+                              userList: userList,
+                              rate: 2,
+                            ),
+                            _Rating(
+                              userList: userList,
+                              rate: 3,
+                            ),
+                            _Rating(
+                              userList: userList,
+                              rate: 4,
+                            ),
+                            _Rating(
+                              userList: userList,
+                              rate: 5,
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ),
@@ -88,6 +114,35 @@ class UserScreen extends StatelessWidget {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _Rating extends StatelessWidget {
+  final userList;
+  final rate;
+  const _Rating({
+    required this.userList,
+    required this.rate,
+    Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: (){
+        Navigator.of(context).pop(
+            {
+              "idx" : userList['idx'],
+              "rate" : rate,
+            }
+        );
+      },
+      child: Text(
+        '${rate}',
+        style: TextStyle(
+          fontSize: 30.0,
         ),
       ),
     );

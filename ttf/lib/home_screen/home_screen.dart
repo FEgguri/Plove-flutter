@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ttf/component/user_screen.dart';
@@ -15,94 +14,109 @@ class _HomeScreenState extends State<HomeScreen> {
   var count = 1;
   List<Map<String, String>> proList = [
     {
-      "key": '1',
+      "idx": '1',
       "img": 'asset/image/proflie/people_1.png',
       "name": "robin",
       "age": '23',
+      "rate" : "0"
     },
     {
-      "key": '2',
+      "idx": '2',
       "img": 'asset/image/proflie/people_2.png',
       "name": "jasi",
       "age": '34',
+      "rate" : "0"
     },
     {
-      "key": '3',
+      "idx": '3',
       "img": 'asset/image/proflie/people_3.png',
       "name": "robert",
       "age": '34',
+      "rate" : "0"
     },
     {
-      "key": '4',
+      "idx": '4',
       "img": 'asset/image/proflie/people_4.png',
       "name": "teemo",
       "age": '17',
+      "rate" : "0"
     },
     {
-      "key": '5',
+      "idx": '5',
       "img": 'asset/image/proflie/people_5.png',
       "name": "jinger",
       "age": '25',
+      "rate" : "0"
     },
     {
-      "key": '6',
+      "idx": '6',
       "img": 'asset/image/proflie/people_6.png',
       "name": "pola",
       "age": '23',
+      "rate" : "0"
     },
     {
-      "key": '7',
+      "idx": '7',
       "img": 'asset/image/proflie/people_7.png',
       "name": "rubi",
       "age": '25',
+      "rate" : "0"
     },
     {
-      "key": '8',
+      "idx": '8',
       "img": 'asset/image/proflie/people_8.png',
       "name": "trip",
       "age": '33',
+      "rate" : "0"
     },
     {
-      "key": '9',
+      "idx": '9',
       "img": 'asset/image/proflie/people_9.png',
       "name": "tom",
       "age": '31',
+      "rate" : "0"
     },
     {
-      "key": '10',
+      "idx": '10',
       "img": 'asset/image/proflie/people_10.png',
       "name": "rabet",
       "age": '35',
+      "rate" : "0"
     },
     {
-      "key": '11',
+      "idx": '11',
       "img": 'asset/image/proflie/people_11.png',
       "name": "jeager",
       "age": '28',
+      "rate" : "0"
     },
     {
-      "key": '12',
+      "idx": '12',
       "img": 'asset/image/proflie/people_12.png',
       "name": "sora",
       "age": '25',
+      "rate" : "0"
     },
     {
-      "key": '13',
+      "idx": '13',
       "img": 'asset/image/proflie/people_13.png',
       "name": "hubo",
       "age": '21',
+      "rate" : "0"
     },
     {
-      "key": '14',
+      "idx": '14',
       "img": 'asset/image/proflie/people_14.png',
       "name": "rachat",
       "age": '27',
+      "rate" : "0"
     },
     {
-      "key": '15',
+      "idx": '15',
       "img": 'asset/image/proflie/people_15.png',
       "name": "jijo",
       "age": '30',
+      "rate" : "0"
     },
   ];
 
@@ -121,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
     stayList.clear();
     stayList.addAll(proList);
     usedList.forEach((v) {
-      stayList.removeWhere((e) => e['key'] == v['key']);
+      stayList.removeWhere((e) => e['idx'] == v['idx']);
     });
 
     stayList.shuffle();
@@ -166,7 +180,6 @@ class _HomeScreenState extends State<HomeScreen> {
               changeList: changeList,
               count: count,
             ),
-
           ],
         ),
         centerTitle: false,
@@ -183,10 +196,49 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: 30.0,
             ),
-            _ListOperater(
-              viewList: viewList,
+            Container(
+              child: Wrap(
+                alignment: WrapAlignment.spaceEvenly,
+                direction: Axis.horizontal,
+                spacing: 10,
+                runSpacing: 10,
+                children: [
+                  ...viewList.map(
+                    (e) => _ProfileLIst(
+                      onTap: () async {
+                        final index = await Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => UserScreen(),
+                            settings: RouteSettings(
+                              arguments: [
+                                {
+                                  'idx': '${e['idx']}',
+                                  'age': '${e['age']}',
+                                  'name': '${e['name']}',
+                                  'img': '${e['img']}',
+                                  'rate' : '${e['rate']}'
+                                }
+                              ],
+                            ),
+                          ),
+                        );
+                        print(index['idx']);
+                        print(index['rate']);
+                        var ray = int.parse(index['idx']);
+                        proList.forEach((k) {
+                          if (k["idx"] == "$ray") {
+                            k["rate"] = '${index["rate"]}';
+                          }
+                        });
+                        print(proList);
+                      },
+                      userImg: e['img'],
+                      userName: e['name'],
+                    ),
+                  )
+                ],
+              ),
             ),
-
           ],
         ),
       ),
@@ -225,12 +277,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-
-
 class _Timeleft extends StatelessWidget {
   final now;
 
-  const _Timeleft({required this.now, Key? key}) : super(key: key);
+  const _Timeleft({
+    required this.now,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -335,46 +388,6 @@ class _ProfileLIst extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _ListOperater extends StatelessWidget {
-  final viewList;
-
-  const _ListOperater({
-    required this.viewList,
-    Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Wrap(
-        alignment: WrapAlignment.spaceEvenly,
-        direction: Axis.horizontal,
-        spacing: 10,
-        runSpacing: 10,
-        children: [
-          ...viewList.map(
-                (e) => _ProfileLIst(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => UserScreen(),
-                    settings: RouteSettings(arguments: [
-                      {
-                        'key': '${e['key']}',
-                        'age': '${e['age']}',
-                        'name': '${e['name']}',
-                        'img': '${e['img']}',
-                      }
-                    ])));
-              },
-              userImg: e['img'],
-              userName: e['name'],
-            ),
-          )
-        ],
       ),
     );
   }
