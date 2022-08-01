@@ -23,7 +23,8 @@ class LocalDatabase extends _$LocalDatabase {
   Stream<List<Content>> watchContents()=>
       select(contents).watch();
 
-
+  Future<Content> getContentbyId(int id) =>
+      (select(contents)..where((tbl) => tbl.id.equals(id))).getSingle();
 
  // Future<List<Contents>> getContents() =>
  //     select(contents).get();

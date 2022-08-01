@@ -8,8 +8,8 @@ class ContentViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pushId = (ModalRoute.of(context)?.settings.arguments);
-
-
+    String? title;
+    String? innercontent;
 
     return Scaffold(
       appBar: AppBar(
@@ -37,22 +37,29 @@ class ContentViewScreen extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           color: Colors.purple[300],
-
         ),
         padding: EdgeInsets.all(20.0),
-        child: StreamBuilder<List<Content>>(
-            stream: GetIt.I<LocalDatabase>().watchContents(),
+        child: FutureBuilder<Content>  (
+            future: GetIt.I<LocalDatabase>().getContentbyId(int.parse(pushId.toString())),
             builder: (context, snapshot) {
-              List contents = [];
 
-              if (snapshot.hasData) {
-                contents = snapshot.data!
-                    .where((element) => element.id == pushId).toList().toList();
-
+              if(snapshot.hasError){
+                return Center(child: Text('error'),);
               }
-              final String title = contents[0].title;
-              final String innercontent = contents[0].innercontent;
 
+               if (snapshot.connectionState != ConnectionState.none &&
+                   !snapshot.hasData && snapshot.data == null) {
+
+                 return Center(
+                   child: CircularProgressIndicator(),
+                 );
+               }
+
+
+               if (snapshot.hasData && title == null && innercontent == null ){
+                title = snapshot.data!.title;
+                innercontent = snapshot.data!.innercontent;
+               }
 
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -66,23 +73,22 @@ class ContentViewScreen extends StatelessWidget {
                         Radius.circular(12.0),
                       ),
                     ),
-                    child: Text(title),
+                    child: Text(title!),
                   ),
                   Container(
                     width: double.infinity,
                     height: 300,
                     padding: EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
-                      color: Colors.purple[200],
+                        color: Colors.purple[200],
                         border: Border.all(
-                      color: Colors.black,
-                      width: 1.0,
-                    ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(12.0),
-                      )
-                    ),
-                    child: Text(innercontent),
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(12.0),
+                        )),
+                    child: Text(innercontent!),
                   ),
                 ],
               );
@@ -92,6 +98,7 @@ class ContentViewScreen extends StatelessWidget {
     );
   }
 }
+
 class _Bottom extends StatelessWidget {
   const _Bottom({Key? key}) : super(key: key);
 
@@ -106,9 +113,9 @@ class _Bottom extends StatelessWidget {
         decoration: BoxDecoration(
             border: Border(
                 top: BorderSide(
-                  color: Colors.grey,
-                  width: 0.8,
-                ))),
+          color: Colors.grey,
+          width: 0.8,
+        ))),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -133,12 +140,13 @@ class _Bottom extends StatelessWidget {
                 child: Text('라운지')),
             Text('프로필평가'),
             GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamed(
-                    '/myinfo',
-                  );
-                },
-                child: Text('내정보')),
+              onTap: () {
+                Navigator.of(context).pushNamed(
+                  '/myinfo',
+                );
+              },
+              child: Text('내정보'),
+            ),
           ],
         ),
       ),

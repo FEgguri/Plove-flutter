@@ -108,7 +108,7 @@ class _RoungeFrontState extends State<RoungeFront> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                    width: 300.0,
+                                    width: 200.0,
                                     height: 20.0,
                                     child: Text(content.title,
                                     style: TextStyle(
